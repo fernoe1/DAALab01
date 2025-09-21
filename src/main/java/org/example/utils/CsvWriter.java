@@ -9,7 +9,7 @@ public class CsvWriter {
 
     private CsvWriter() {
         try (FileWriter writer = new FileWriter(FILENAME)) {
-            writer.write("algorithm,n,comparisons,assignments,maxDepth,timeNs\n");
+            writer.write("algorithm,n,comparisons,assignments,maxDepth,timeMs\n");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -15,6 +15,13 @@ public class Metrics {
         startTime = System.nanoTime();
     }
 
+    public void reset() {
+        comparisons = 0;
+        assignments = 0;
+        maxDepth = 0;
+        startTime = 0;
+    }
+
     public double getTimeTaken() {
         return ((System.nanoTime() - startTime) / 1000000);
     }
