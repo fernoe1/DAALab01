@@ -12,10 +12,13 @@ import java.util.*;
  * O(n log n) time complexity, O(n log n) space complexity
  */
 public class ClosestPair {
-    private static final Metrics METRICS = new Metrics("Closest Pair", 1000);
+    private static final Metrics METRICS = Metrics.getInstance();
     private static final CsvWriter CSV_WRITER = CsvWriter.getCsvWriter();
 
     public static void start() throws IOException {
+        METRICS.setAlgorithm("Closest Pair");
+        METRICS.setN(1000);
+
         Random random = new Random();
         Point[] points = new Point[1000];
         for (int i = 0; i < 1000; i++) {

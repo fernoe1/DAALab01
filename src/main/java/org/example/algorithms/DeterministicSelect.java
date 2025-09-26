@@ -13,10 +13,13 @@ import java.util.Random;
  * O(n) time complexity, O(n) space complexity
  */
 public class DeterministicSelect {
-    private static final Metrics METRICS = new Metrics("Deterministic Select", 1000);
+    private static final Metrics METRICS = Metrics.getInstance();
     private static final CsvWriter CSV_WRITER = CsvWriter.getCsvWriter();
 
     public static void start() throws IOException {
+        METRICS.setAlgorithm("Deterministic Select");
+        METRICS.setN(1000);
+
         int[] arr = new int[1000];
         Random random = new Random();
 
