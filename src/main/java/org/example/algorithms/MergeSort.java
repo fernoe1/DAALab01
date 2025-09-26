@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class MergeSort {
     private static final int RUN_SIZE = 16;
-    private static final Metrics METRICS = new Metrics("Merge Sort", 1000);
+    private static final Metrics METRICS = Metrics.getInstance();
     private static final CsvWriter CSV_WRITER = CsvWriter.getCsvWriter();
 
     /**
@@ -20,6 +20,9 @@ public class MergeSort {
      * O(n log n) time complexity, O(n) space complexity.
      */
     public static void start() throws IOException {
+        METRICS.setAlgorithm("Merge Sort");
+        METRICS.setN(1000);
+
         int[] arr = new int[1000];
         Random random = new Random();
 

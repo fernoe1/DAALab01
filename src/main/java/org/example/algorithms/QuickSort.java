@@ -12,10 +12,13 @@ import java.util.Random;
  */
 public class QuickSort {
     private static final Random RANDOM = new Random();
-    private static final Metrics METRICS = new Metrics("Quick Sort", 1000);
+    private static final Metrics METRICS = Metrics.getInstance();
     private static final CsvWriter CSV_WRITER = CsvWriter.getCsvWriter();
 
     public static void start() throws IOException {
+        METRICS.setAlgorithm("Quick Sort");
+        METRICS.setN(1000);
+
         int[] arr = new int[1000];
 
         for (int i = 0; i < 1000; i++) {
