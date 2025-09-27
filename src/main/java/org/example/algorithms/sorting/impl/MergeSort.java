@@ -1,5 +1,7 @@
-package org.example.algorithms;
+package org.example.algorithms.sorting.impl;
 
+import org.example.algorithms.IAlgorithm;
+import org.example.algorithms.sorting.ISorter;
 import org.example.utils.CsvWriter;
 import org.example.utils.Metrics;
 
@@ -10,36 +12,40 @@ import java.util.Random;
  * Buffer + Merge Sort + Insertion Sort
  * O(n log n) time complexity, O(n) space complexity
  */
-public class MergeSort {
+public class MergeSort implements ISorter, IAlgorithm {
     private static final int RUN_SIZE = 16;
     private static final Metrics METRICS = Metrics.getInstance();
     private static final CsvWriter CSV_WRITER = CsvWriter.getCsvWriter();
+
+    @Override
+    public <T extends Comparable<T>> void sort(T[] arr) {
+        T[] buffer = (T[]) new Comparable[arr.length];
+        METRICS.reset();
+        METRICS.increaseAssignments();
+        mergeSort(arr, buffer, 0, arr.length, 0);
+    }
 
     /**
      * Buffer + Merge Sort + Insertion Sort. <br>
      * O(n log n) time complexity, O(n) space complexity.
      */
-    public static void start() throws IOException {
+    @Override
+    public void start() throws IOException {
         METRICS.setAlgorithm("Merge Sort");
         METRICS.setN(1000);
 
-        int[] arr = new int[1000];
+        Integer[] arr = new Integer[1000];
         Random random = new Random();
-
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < arr.length; i++) {
             arr[i] = random.nextInt(1, 1000);
         }
 
-        METRICS.reset();
-        int[] buffer = new int[arr.length];
-        METRICS.increaseAssignments(); // buffer
-
-        mergeSort(arr, buffer, 0, arr.length, 0);
+        sort(arr);
 
         CSV_WRITER.write(METRICS);
     }
 
-    public static void mergeSort(int[] arr, int[] buffer, int start, int end, int depth) {
+    private static <T extends Comparable<T>> void mergeSort(T[] arr, T[] buffer, int start, int end, int depth) {
         METRICS.setMaxDepth(depth);
 
         METRICS.increaseComparisons(); // check (end - start <= RUN_SIZE)
@@ -57,7 +63,7 @@ public class MergeSort {
         merge(arr, buffer, start, mid, end);
     }
 
-    public static void merge(int[] arr, int[] buffer, int start, int mid, int end) {
+    private static <T extends Comparable<T>> void merge(T[] arr, T[] buffer, int start, int mid, int end) {
         int l = start;
         METRICS.increaseAssignments();
         int r = mid;
@@ -69,7 +75,7 @@ public class MergeSort {
             METRICS.increaseComparisons(); // (l < mid && r < end)
 
             METRICS.increaseComparisons(); // compare arr[l] <= arr[r]
-            if (arr[l] <= arr[r]) {
+            if (arr[l].compareTo(arr[r]) <= 0) {
                 buffer[b] = arr[l];
                 METRICS.increaseAssignments();
 
@@ -120,17 +126,17 @@ public class MergeSort {
         METRICS.increaseComparisons(); // failed check
     }
 
-    public static void insertionSort(int[] arr, int start, int end) {
+    private static <T extends Comparable<T>> void insertionSort(T[] arr, int start, int end) {
         for (int i = start + 1; i < end; i++) {
             METRICS.increaseComparisons(); // loop condition
 
-            int key = arr[i];
+            T key = arr[i];
             METRICS.increaseAssignments();
 
             int j = i - 1;
             METRICS.increaseAssignments();
 
-            while (j >= start && arr[j] > key) {
+            while (j >= start && arr[j].compareTo(key) > 0) {
                 METRICS.increaseComparisons(); // (j >= start && arr[j] > key)
 
                 arr[j + 1] = arr[j];

@@ -9,8 +9,8 @@ public class BenchmarkRunner {
         Options opt = new OptionsBuilder()
                 .include(SelectSortBenchmark.class.getSimpleName())
                 .forks(1)
-                .warmupIterations(5)
-                .measurementIterations(10)
+                .warmupIterations(1)
+                .measurementIterations(2)
                 .build();
 
         new Runner(opt).run();

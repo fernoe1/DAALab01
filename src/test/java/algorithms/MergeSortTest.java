@@ -1,28 +1,28 @@
 package algorithms;
 
-import org.example.algorithms.MergeSort;
+import org.example.algorithms.sorting.impl.MergeSort;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 public class MergeSortTest {
-    int[] mergeSort(int[] arr) {
-        int[] buffer = new int[arr.length];
-        MergeSort.mergeSort(arr, buffer, 0, arr.length, 0);
+    Integer[] mergeSort(Integer[] arr) {
+        MergeSort mergeSort = new MergeSort();
+        mergeSort.sort(arr);
 
         return arr;
     }
 
     @Test
     void testSort() {
-        int[] unsortedArr = {5, 4, 2, 3, 1};
-        int[] sortedArr = {1, 2, 3, 4, 5};
+        Integer[] unsortedArr = {5, 4, 2, 3, 1};
+        Integer[] sortedArr = {1, 2, 3, 4, 5};
 
         assertArrayEquals(sortedArr, mergeSort(unsortedArr));
     }
 
     @Test
     void testEmpty() {
-        assertArrayEquals(new int[] {}, mergeSort(new int[] {}));
+        assertArrayEquals(new Integer[] {}, mergeSort(new Integer[] {}));
     }
 }

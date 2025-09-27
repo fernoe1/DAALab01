@@ -1,6 +1,6 @@
 package algorithms;
 
-import org.example.algorithms.ClosestPair;
+import org.example.algorithms.impl.ClosestPair;
 import org.example.models.Point;
 import org.junit.jupiter.api.Test;
 

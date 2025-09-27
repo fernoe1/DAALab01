@@ -1,17 +1,26 @@
 package org.example.cli;
 
-import org.example.algorithms.ClosestPair;
-import org.example.algorithms.DeterministicSelect;
-import org.example.algorithms.MergeSort;
-import org.example.algorithms.QuickSort;
+import org.example.algorithms.IAlgorithm;
+import org.example.algorithms.impl.ClosestPair;
+import org.example.algorithms.impl.DeterministicSelect;
+import org.example.algorithms.sorting.impl.MergeSort;
+import org.example.algorithms.sorting.impl.QuickSort;
 import org.example.utils.Metrics;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CLI {
     public static void start() throws IOException {
         Scanner sc = new Scanner(System.in);
+
+        Map<String, IAlgorithm> algorithms = Map.of(
+                "Merge Sort", new MergeSort(),
+                "Quick Sort", new QuickSort(),
+                "Deterministic Select", new DeterministicSelect(),
+                "Closest Pair", new ClosestPair()
+        );
 
         System.out.println("All algorithms are run on input size of 1000, with each input being 0 <= input <= 999");
         while (true) {
@@ -24,26 +33,25 @@ public class CLI {
             int input = sc.nextInt();
             switch (input) {
                 case 0:
-                    MergeSort.start();
+                    algorithms.get("Merge Sort").start();
                     System.out.println(Metrics.getInstance());
                     break;
                 case 1:
-                    QuickSort.start();
+                    algorithms.get("Quick Sort").start();
                     System.out.println(Metrics.getInstance());
                     break;
                 case 2:
-                    DeterministicSelect.start();
+                    algorithms.get("Deterministic Select").start();
                     System.out.println(Metrics.getInstance());
                     break;
                 case 3:
-                    ClosestPair.start();
+                    algorithms.get("Closest Pair").start();
                     System.out.println(Metrics.getInstance());
                     break;
                 case 4:
-                    MergeSort.start();
-                    QuickSort.start();
-                    DeterministicSelect.start();
-                    ClosestPair.start();
+                    for (IAlgorithm algo : algorithms.values()) {
+                        algo.start();
+                    }
                     System.out.println("Check metrics.csv for results");
                     break;
                 case 5:

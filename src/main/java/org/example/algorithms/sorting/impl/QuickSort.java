@@ -1,5 +1,7 @@
-package org.example.algorithms;
+package org.example.algorithms.sorting.impl;
 
+import org.example.algorithms.IAlgorithm;
+import org.example.algorithms.sorting.ISorter;
 import org.example.utils.CsvWriter;
 import org.example.utils.Metrics;
 
@@ -10,29 +12,31 @@ import java.util.Random;
  * Optimized + Hoare's Partition Quick Sort
  * O(n log n) time complexity, O(n) space complexity
  */
-public class QuickSort {
+public class QuickSort implements ISorter, IAlgorithm {
     private static final Random RANDOM = new Random();
     private static final Metrics METRICS = Metrics.getInstance();
     private static final CsvWriter CSV_WRITER = CsvWriter.getCsvWriter();
 
-    public static void start() throws IOException {
+    @Override
+    public <T extends Comparable<T>> void sort(T[] arr) {
+        METRICS.reset();
+        quickSort(arr, 0, arr.length - 1, 0);
+    }
+
+    @Override
+    public void start() throws IOException {
         METRICS.setAlgorithm("Quick Sort");
         METRICS.setN(1000);
 
-        int[] arr = new int[1000];
+        Integer[] arr = new Integer[1000];
+        for (int i = 0; i < arr.length; i++) arr[i] = RANDOM.nextInt(1, 1000);
 
-        for (int i = 0; i < 1000; i++) {
-            arr[i] = RANDOM.nextInt(1, 1000);
-        }
-
-        METRICS.reset();
-
-        quickSort(arr, 0, arr.length - 1, 0);
+        sort(arr);
 
         CSV_WRITER.write(METRICS);
     }
 
-    public static void quickSort(int[] arr, int start, int end, int depth) {
+    private static <T extends Comparable<T>> void quickSort(T[] arr, int start, int end, int depth) {
         METRICS.setMaxDepth(depth);
 
         while (start < end) {
@@ -60,18 +64,14 @@ public class QuickSort {
         METRICS.increaseComparisons(); // fail
     }
 
-    public static int hoarePartition(int[] arr, int start, int end) {
+    private static <T extends Comparable<T>> int hoarePartition(T[] arr, int start, int end) {
         int pivotIndex = RANDOM.nextInt(start, end + 1);
         METRICS.increaseAssignments();
-        int pivot = arr[pivotIndex];
+        T pivot = arr[pivotIndex];
         METRICS.increaseAssignments();
 
-        int temp = arr[start];
-        arr[start] = arr[pivotIndex];
-        arr[pivotIndex] = temp;
-        METRICS.increaseAssignments();
-        METRICS.increaseAssignments();
-        METRICS.increaseAssignments();
+        T temp = arr[start]; arr[start] = arr[pivotIndex]; arr[pivotIndex] = temp;
+        METRICS.increaseAssignments(); METRICS.increaseAssignments(); METRICS.increaseAssignments();
 
         int left = start + 1;
         int right = end;
@@ -80,11 +80,11 @@ public class QuickSort {
 
         while (left <= right) {
             METRICS.increaseComparisons(); // while
-            if (arr[left] <= pivot) {
+            if (arr[left].compareTo(pivot) <= 0) {
                 METRICS.increaseComparisons();
                 left++;
                 METRICS.increaseAssignments();
-            } else if (arr[right] > pivot) {
+            } else if (arr[right].compareTo(pivot) > 0) {
                 METRICS.increaseComparisons();
                 right--;
                 METRICS.increaseAssignments();
@@ -102,12 +102,8 @@ public class QuickSort {
             }
         }
 
-        temp = arr[start];
-        arr[start] = arr[right];
-        arr[right] = temp;
-        METRICS.increaseAssignments();
-        METRICS.increaseAssignments();
-        METRICS.increaseAssignments();
+        temp = arr[start]; arr[start] = arr[right]; arr[right] = temp;
+        METRICS.increaseAssignments(); METRICS.increaseAssignments(); METRICS.increaseAssignments();
 
         return right;
     }

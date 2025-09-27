@@ -1,5 +1,6 @@
-package org.example.algorithms;
+package org.example.algorithms.impl;
 
+import org.example.algorithms.IAlgorithm;
 import org.example.models.Point;
 import org.example.utils.CsvWriter;
 import org.example.utils.Metrics;
@@ -11,11 +12,12 @@ import java.util.*;
  * Divide and Conquer Select Closest Pair
  * O(n log n) time complexity, O(n log n) space complexity
  */
-public class ClosestPair {
+public class ClosestPair implements IAlgorithm {
     private static final Metrics METRICS = Metrics.getInstance();
     private static final CsvWriter CSV_WRITER = CsvWriter.getCsvWriter();
 
-    public static void start() throws IOException {
+    @Override
+    public void start() throws IOException {
         METRICS.setAlgorithm("Closest Pair");
         METRICS.setN(1000);
 

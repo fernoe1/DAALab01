@@ -1,8 +1,8 @@
 package org.example.benchmarks;
 
-import org.example.algorithms.DeterministicSelect;
-import org.example.algorithms.MergeSort;
-import org.example.algorithms.QuickSort;
+import org.example.algorithms.impl.DeterministicSelect;
+import org.example.algorithms.sorting.impl.MergeSort;
+import org.example.algorithms.sorting.impl.QuickSort;
 import org.openjdk.jmh.annotations.*;
 
 import java.util.Arrays;
@@ -16,21 +16,26 @@ public class SelectSortBenchmark {
 
     @Benchmark
     public void benchMergeSort(ExecutionPlan plan) {
-        int[] copy = Arrays.copyOf(plan.array, plan.array.length);
-        int[] buffer = new int[copy.length];
-        MergeSort.mergeSort(copy, buffer, 0, copy.length, 0);
+        Integer[] copy = Arrays.copyOf(plan.array, plan.array.length);
+        MergeSort mergeSort = new MergeSort();
+        mergeSort.sort(copy);
     }
 
     @Benchmark
     public void benchQuickSort(ExecutionPlan plan) {
-        int[] copy = Arrays.copyOf(plan.array, plan.array.length);
-        QuickSort.quickSort(copy, 0, copy.length - 1, 0);
+        Integer[] copy = Arrays.copyOf(plan.array, plan.array.length);
+        QuickSort quickSort = new QuickSort();
+        quickSort.sort(copy);
     }
 
     @Benchmark
     public void benchDeterministicSelect(ExecutionPlan plan) {
         Random random = new Random();
-        int[] copy = Arrays.copyOf(plan.array, plan.array.length);
-        DeterministicSelect.select(copy, random.nextInt(1, plan.array.length), 0);
+        Integer[] copy = Arrays.copyOf(plan.array, plan.array.length);
+        int[] primitiveCopy = Arrays.stream(plan.array)
+                .mapToInt(Integer::intValue)
+                .toArray();
+
+        DeterministicSelect.select(primitiveCopy, random.nextInt(1, plan.array.length), 0);
     }
 }
